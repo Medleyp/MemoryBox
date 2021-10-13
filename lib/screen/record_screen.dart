@@ -38,7 +38,7 @@ class _RecordScreenState extends State<RecordScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    file = await FileServise.pickFile(fileExstention: '.mp3');
+                    file = await FileServise.pickFile();
                     if (file == null) {
                       await showErrorDialog(
                         context,
