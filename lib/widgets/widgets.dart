@@ -67,10 +67,12 @@ Container paintedContainer({
 
 Scaffold paintedScaffold({
   required Widget body,
+  AppBar? appBar,
   Color backgroudColor = Constants.purpleColor,
   double? drawHeight,
 }) {
   return Scaffold(
+    appBar: appBar,
     backgroundColor: const Color(0xFFF6F6F6),
     body: SingleChildScrollView(
       child: Column(
@@ -137,6 +139,7 @@ TextField buildTextField(
   bool showBorder = false,
 }) {
   return TextField(
+    cursorColor: Colors.black45,
     textAlign: TextAlign.center,
     enabled: enabled == false ? false : null,
     controller: controller,
@@ -153,6 +156,28 @@ TextField buildTextField(
           ? const UnderlineInputBorder(
               borderSide: BorderSide(color: Constants.textColor))
           : null,
+    ),
+  );
+}
+
+Widget horizAppBarAction() {
+  return IconButton(
+    onPressed: () {},
+    icon: SvgPicture.asset(
+      'assets/icons/More_horiz.svg',
+      color: Colors.white,
+    ),
+  );
+}
+
+Widget backArrowAppBar(VoidCallback onPrassed) {
+  return Container(
+    margin: const EdgeInsets.only(left: 9, top: 9),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15), color: Colors.white),
+    child: IconButton(
+      onPressed: onPrassed,
+      icon: SvgPicture.asset('assets/icons/Arrow - Left Circle.svg'),
     ),
   );
 }

@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 
 class AudioRecordings extends StatefulWidget {
   static const routeName = '/records';
-  static const Color appBarColor = Constants.audioFilesColor;
-  static const String appBarText = 'Аудиозаписи';
   final Function setAction;
   const AudioRecordings(this.setAction, {Key? key}) : super(key: key);
 
@@ -86,6 +84,16 @@ class _AudioRecordingsState extends State<AudioRecordings> {
   }
 
   @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      widget.setAction(
+        horizAppBarAction(),
+      );
+    });
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     if (!_isInit) {
       _userModel = Provider.of<UserModel>(context);
@@ -121,12 +129,9 @@ class _AudioRecordingsState extends State<AudioRecordings> {
     _userModel = Provider.of<UserModel>(context);
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      widget.setAction(IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            'assets/icons/More_horiz.svg',
-            color: Colors.white,
-          )));
+      widget.setAction(
+        horizAppBarAction(),
+      );
     });
 
     return paintedScaffold(

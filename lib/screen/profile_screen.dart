@@ -19,8 +19,7 @@ import '../widgets/dialogs.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
-  static const Color appBarColor = Constants.purpleColor;
-  static const String appBarText = 'Профиль';
+
   final Function setAppBarLeding;
 
   const ProfileScreen(this.setAppBarLeding, {Key? key}) : super(key: key);
@@ -134,22 +133,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _backArrowAppBar() {
-    return Container(
-      margin: const EdgeInsets.only(left: 9, top: 9),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15), color: Colors.white),
-      child: IconButton(
-        onPressed: () {
-          setState(() {
-            widget.setAppBarLeding();
-            _isEditing = false;
-            _editImageUrl = null;
-            _editNameController = null;
-            _editPhoneController = null;
-          });
-        },
-        icon: SvgPicture.asset('assets/icons/Arrow - Left Circle.svg'),
-      ),
+    return backArrowAppBar(
+      () => setState(() {
+        widget.setAppBarLeding();
+        _isEditing = false;
+        _editImageUrl = null;
+        _editNameController = null;
+        _editPhoneController = null;
+      }),
     );
   }
 

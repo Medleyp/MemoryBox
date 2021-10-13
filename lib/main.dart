@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       providers: [ChangeNotifierProvider(create: (_) => UserModel())],
       child: MaterialApp(
         theme: ThemeData(
+          textButtonTheme: textButtonTheme,
           elevatedButtonTheme: elevatedButtonTheme,
           textTheme: textTheme,
         ),
@@ -38,7 +39,6 @@ class MyApp extends StatelessWidget {
         routes: {
           ControlScreen.routeName: (_) => const ControlScreen(),
           RegistrationScreen.routeName: (_) => const RegistrationScreen(),
-          CollectionScreen.routeName: (_) => const CollectionScreen(),
         },
       ),
     );

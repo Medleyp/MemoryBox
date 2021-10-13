@@ -13,8 +13,7 @@ import '../widgets/widgets.dart';
 
 class RecordScreen extends StatefulWidget {
   static const routeName = '/recording';
-  static const Color appBarColor = Constants.purpleColor;
-  static const String appBarText = ' ';
+
   const RecordScreen({Key? key}) : super(key: key);
 
   @override

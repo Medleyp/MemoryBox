@@ -9,8 +9,11 @@ import 'package:memory_box/screen/home_screen.dart';
 import 'package:memory_box/screen/profile_screen.dart';
 import 'package:memory_box/screen/record_screen.dart';
 import 'package:memory_box/service/constants.dart';
+import 'package:memory_box/widgets/bottom_navigation.dart';
 
 import 'package:memory_box/widgets/drawer.dart';
+
+import 'add_collection_screen.dart';
 
 class ControlScreen extends StatefulWidget {
   static const routeName = '/control';
@@ -32,7 +35,7 @@ class _ControlScreenState extends State<ControlScreen> {
     );
   });
 
-  void setCurrentIndex(int index, [bool shouldPop = true]) {
+  void setCurrentIndex(int index, [bool shouldPop = false]) {
     if (shouldPop) Navigator.of(context).pop();
     setState(() {
       currentIndex = index;
@@ -62,91 +65,6 @@ class _ControlScreenState extends State<ControlScreen> {
     }
   }
 
-  Container _buildBottomNavigation() {
-    const Radius radius = Radius.circular(25);
-
-    const TextStyle textStyle = TextStyle(
-      fontFamily: 'TTNorms',
-      color: Constants.textColor,
-      fontWeight: FontWeight.w500,
-      fontSize: 10,
-    );
-
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: radius, topRight: radius),
-        boxShadow: [
-          BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10)
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topRight: radius,
-          topLeft: radius,
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: textStyle,
-          unselectedLabelStyle: textStyle,
-          currentIndex: currentIndex,
-          selectedItemColor: Constants.purpleColor,
-          onTap: (index) => setState(() => currentIndex = index),
-          items: [
-            BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(
-                'assets/icons/Home.svg',
-                color: Constants.purpleColor,
-              ),
-              icon: SvgPicture.asset('assets/icons/Home.svg'),
-              label: 'Главная',
-            ),
-            BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(
-                'assets/icons/Category.svg',
-                color: Constants.purpleColor,
-              ),
-              icon: SvgPicture.asset('assets/icons/Category.svg'),
-              label: 'Подборки',
-            ),
-            BottomNavigationBarItem(
-              icon: Column(
-                children: [
-                  Container(
-                    height: 46,
-                    width: 46,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF1B488),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: SvgPicture.asset('assets/icons/Voice.svg'),
-                  ),
-                ],
-              ),
-              label: 'Запись',
-            ),
-            BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(
-                'assets/icons/Paper.svg',
-                color: Constants.purpleColor,
-              ),
-              icon: SvgPicture.asset('assets/icons/Paper.svg'),
-              label: 'Аудиозаписи',
-            ),
-            BottomNavigationBarItem(
-              activeIcon: SvgPicture.asset(
-                'assets/icons/Profile.svg',
-                color: Constants.purpleColor,
-              ),
-              icon: SvgPicture.asset('assets/icons/Profile.svg'),
-              label: 'Профиль',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -154,34 +72,32 @@ class _ControlScreenState extends State<ControlScreen> {
 
     List<Widget> screens = [
       HomeScreen(setCurrentIndex),
-      const CollectionScreen(),
+      CollectionScreen(
+        setAction: setAction,
+        setLeading: setAppBarLeading,
+        setIndex: setCurrentIndex,
+      ),
       const RecordScreen(),
       AudioRecordings(setAction),
-      ProfileScreen(setAppBarLeading)
+      ProfileScreen(setAppBarLeading),
+      AddCollectionScreen(setCurrentIndex),
     ];
 
     return Scaffold(
-      bottomNavigationBar: _buildBottomNavigation(),
-      appBar: currentIndex == 0
+      bottomNavigationBar: BottomNavigation(setIndex: setCurrentIndex),
+      appBar: currentIndex == 0 || currentIndex == 5
           ? null
           : AppBar(
+              centerTitle: true,
               backgroundColor: Constants.appBarColors[currentIndex],
               elevation: 0,
               leading: _appBarLeding,
-              title: Padding(
-                padding: EdgeInsets.only(
-                  left: (_action == null ? width * 0.15 : width * 0.1) -
-                      Constants.appBarTitles[currentIndex].length * 3,
-                ),
-                child: FittedBox(
-                  child: Text(
-                    Constants.appBarTitles[currentIndex],
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(fontSize: 36),
-                  ),
-                ),
+              title: Text(
+                Constants.appBarTitles[currentIndex],
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(fontSize: 36),
               ),
               actions: _action == null ? [] : [_action!],
             ),
